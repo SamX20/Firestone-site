@@ -1,0 +1,4 @@
+assets/
+tools/
+*.zip
+site/server.*.log

@@ -1,0 +1,5 @@
+/assets/
+/tools/
+*.zip
+.vercel/
+site/server.*.log
