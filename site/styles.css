@@ -640,7 +640,7 @@ body[dir="rtl"] .whatsapp-float {
   }
 
   .hero h1 {
-    font-size: clamp(4rem, 22vw, 6.8rem);
+    font-size: clamp(3.35rem, 18.5vw, 5.95rem);
   }
 
   .hero-copy {
