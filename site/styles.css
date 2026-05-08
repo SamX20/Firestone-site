@@ -136,6 +136,13 @@ body[dir="rtl"] .brand img {
   stroke-linejoin: round;
 }
 
+.whatsapp-float svg {
+  width: 30px;
+  height: 30px;
+  fill: #17110b;
+  stroke: none;
+}
+
 .icon-button.hot,
 .whatsapp-float {
   background: var(--ember);
