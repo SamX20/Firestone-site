@@ -1,4 +1,4 @@
-assets/
+source-assets-local/
 tools/
 *.zip
 site/server.*.log

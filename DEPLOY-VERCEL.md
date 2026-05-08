@@ -1,6 +1,6 @@
 # Firestone Vercel Deployment
 
-This project is a static website. Vercel should serve the `site` folder directly.
+This project is a static website. Vercel should serve the repository root directly.
 
 ## Dashboard Deployment
 
@@ -9,7 +9,7 @@ This project is a static website. Vercel should serve the `site` folder directly
 3. Import the GitHub repository.
 4. Set Framework Preset to `Other`.
 5. Leave Build Command empty.
-6. Keep Output Directory as `site`; it is also configured in `vercel.json`.
+6. Leave Output Directory empty.
 7. Deploy.
 
 ## Domain
