@@ -236,11 +236,11 @@ body[dir="rtl"] .section-kicker {
 }
 
 .hero-copy {
-  width: min(680px, 100%);
+  width: min(780px, 100%);
   margin: 28px 0 0;
   color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(1.08rem, 2.2vw, 1.65rem);
-  line-height: 1.75;
+  font-size: clamp(1.36rem, 2.35vw, 2.02rem);
+  line-height: 1.65;
 }
 
 .hero-actions {
@@ -330,8 +330,8 @@ body[dir="rtl"] h2 {
 .contact-panel p,
 .service-grid p {
   color: rgba(7, 7, 7, 0.68);
-  line-height: 1.8;
-  font-size: 1.02rem;
+  line-height: 1.72;
+  font-size: clamp(1.28rem, 1.55vw, 1.42rem);
 }
 
 .services {
@@ -368,7 +368,7 @@ body[dir="rtl"] h2 {
 .service-grid h3 {
   margin: 72px 0 14px;
   color: white;
-  font-size: 1.35rem;
+  font-size: 1.48rem;
 }
 
 .service-grid p {
@@ -495,19 +495,50 @@ figcaption {
 }
 
 .contact-line {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 16px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   color: rgba(255, 255, 255, 0.86);
   font-weight: 760;
+  font-size: 1.08rem;
+}
+
+.contact-line svg,
+.contact-panel p svg,
+.contact-cta svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contact-line svg,
+.contact-panel p svg {
+  color: var(--ember);
+}
+
+.contact-line span,
+.contact-panel p span,
+.domain span {
+  min-width: 0;
 }
 
 .phone-number,
 .ltr-text {
   direction: ltr;
   unicode-bidi: isolate;
-  text-align: end;
   font-family: "Inter", "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+body[dir="rtl"] .phone-number,
+body[dir="rtl"] .ltr-text {
+  justify-content: flex-end;
 }
 
 .contact-panel .btn {
@@ -515,11 +546,23 @@ figcaption {
   margin: 18px 0 4px;
 }
 
+.contact-cta {
+  gap: 10px;
+}
+
+.contact-cta svg {
+  stroke: #17110b;
+}
+
 .contact-panel p {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   color: rgba(255, 255, 255, 0.68);
 }
 
 .domain {
+  align-items: center !important;
   color: var(--ember) !important;
   font-weight: 900;
 }
@@ -598,7 +641,7 @@ body[dir="rtl"] .whatsapp-float {
   }
 
   .hero-copy {
-    font-size: 1rem;
+    font-size: 1.16rem;
   }
 
   .hero-actions {
