@@ -492,6 +492,8 @@ figcaption {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.045);
+  direction: ltr;
+  text-align: left;
 }
 
 .contact-line {
@@ -503,6 +505,8 @@ figcaption {
   color: rgba(255, 255, 255, 0.86);
   font-weight: 760;
   font-size: 1.08rem;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .contact-line svg,
@@ -536,11 +540,6 @@ figcaption {
   font-family: "Inter", "Segoe UI", Tahoma, Arial, sans-serif;
 }
 
-body[dir="rtl"] .phone-number,
-body[dir="rtl"] .ltr-text {
-  justify-content: flex-end;
-}
-
 .contact-panel .btn {
   width: 100%;
   margin: 18px 0 4px;
@@ -548,6 +547,8 @@ body[dir="rtl"] .ltr-text {
 
 .contact-cta {
   gap: 10px;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .contact-cta svg {
@@ -559,6 +560,8 @@ body[dir="rtl"] .ltr-text {
   align-items: flex-start;
   gap: 12px;
   color: rgba(255, 255, 255, 0.68);
+  direction: ltr;
+  text-align: left;
 }
 
 .domain {
