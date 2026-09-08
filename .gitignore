@@ -2,4 +2,5 @@
 /tools/
 *.zip
 .vercel/
+.env*
 site/server.*.log

@@ -318,6 +318,7 @@ html[dir="rtl"] .directional {
   display: none;
 }
 .hero {
+  background: var(--ink);
   height: min(780px, calc(100svh - 150px));
   min-height: min(590px, calc(100svh - 145px));
   position: relative;
@@ -1011,6 +1012,19 @@ textarea {
 .lightbox-count {
   min-width: 55px;
   text-align: center;
+}
+#lightbox-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  max-height: 100px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  color: #cbd3c5;
+}
+.project-caption h3,
+#lightbox-title {
+  overflow-wrap: anywhere;
 }
 body.modal-open {
   overflow: hidden;

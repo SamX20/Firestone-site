@@ -1,4 +1,5 @@
 source-assets-local/
 tools/
+database/
 *.zip
 site/server.*.log

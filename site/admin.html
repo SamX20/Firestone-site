@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="same-origin" />
+    <title>Firestone | إدارة الموقع</title>
+    <link rel="stylesheet" href="/admin.css" />
+    <script src="/assets/lucide.min.js" defer></script>
+    <script src="/assets/supabase.js" defer></script>
+    <script src="/cms-config.js" defer></script>
+    <script src="/cms.js" defer></script>
+    <script src="/admin.js" defer></script>
+  </head>
+  <body>
+    <div id="auth-screen" class="auth-screen">
+      <form id="login-form" class="login-form">
+        <a href="/" class="auth-brand"
+          ><img
+            src="/assets/firestone-logo-mark.png"
+            alt="Firestone"
+            width="200"
+            height="44"
+        /></a>
+        <p class="eyebrow">إدارة الموقع</p>
+        <h1>أهلاً بعودتك</h1>
+        <label for="email">البريد الإلكتروني</label
+        ><input
+          id="email"
+          type="email"
+          autocomplete="username"
+          value="manager@firestonejo.com"
+          required
+          dir="ltr"
+        />
+        <label for="password">كلمة المرور</label>
+        <div class="password-field">
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            minlength="8"
+            dir="ltr"
+          /><button
+            type="button"
+            id="password-toggle"
+            class="icon-btn"
+            title="إظهار كلمة المرور"
+            aria-label="إظهار كلمة المرور"
+          >
+            <i data-lucide="eye"></i>
+          </button>
+        </div>
+        <p id="login-error" class="error" role="alert"></p>
+        <button type="submit" class="btn primary" id="login-button">
+          تسجيل الدخول <i data-lucide="log-in"></i>
+        </button>
+        <a href="/" class="back-link"
+          >العودة إلى الموقع <i data-lucide="arrow-up-left"></i
+        ></a>
+      </form>
+    </div>
+    <div id="admin-shell" class="admin-shell" hidden>
+      <aside class="sidebar">
+        <a href="/" class="brand"
+          ><img
+            src="/assets/firestone-logo-mark.png"
+            alt="Firestone"
+            width="165"
+            height="37"
+        /></a>
+        <p>لوحة الإدارة</p>
+        <nav aria-label="أقسام الإدارة">
+          <button class="nav-item active" data-tab="projects">
+            <i data-lucide="folders"></i>المشاريع
+            <span id="projects-count">0</span></button
+          ><button class="nav-item" data-tab="slides">
+            <i data-lucide="gallery-horizontal-end"></i>صور الهيرو</button
+          ><button class="nav-item" data-tab="images">
+            <i data-lucide="images"></i>صور الأقسام والشعار
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="/" target="_blank" rel="noopener"
+            ><i data-lucide="external-link"></i>عرض الموقع</a
+          ><button id="change-password">
+            <i data-lucide="key-round"></i>تغيير كلمة المرور</button
+          ><button id="logout">
+            <i data-lucide="log-out"></i>تسجيل الخروج
+          </button>
+        </div>
+      </aside>
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <p class="eyebrow">FIRESTONE JO</p>
+            <h1 id="view-title">المشاريع</h1>
+          </div>
+          <span id="account-email" dir="ltr"></span>
+        </header>
+        <div class="toolbar">
+          <div class="search-field">
+            <i data-lucide="search"></i
+            ><input
+              id="search"
+              placeholder="ابحث عن مشروع..."
+              aria-label="البحث"
+            />
+          </div>
+          <select id="status-filter" aria-label="حالة النشر">
+            <option value="all">كل الحالات</option>
+            <option value="published">منشور</option>
+            <option value="draft">مسودة</option></select
+          ><button
+            class="icon-btn"
+            id="refresh"
+            title="تحديث"
+            aria-label="تحديث"
+          >
+            <i data-lucide="refresh-cw"></i></button
+          ><button class="btn primary" id="add-item">
+            <i data-lucide="plus"></i><span>إضافة مشروع</span>
+          </button>
+        </div>
+        <p id="page-error" class="error" role="alert"></p>
+        <div id="loading" class="loading" role="status" hidden>
+          جاري تحميل المحتوى...
+        </div>
+        <div id="content-list"></div>
+        <p id="empty-state" class="empty-state" hidden>لا توجد نتائج.</p>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <dialog id="editor" class="editor" aria-labelledby="editor-title">
+      <form id="editor-form">
+        <header class="dialog-header">
+          <h2 id="editor-title">إضافة مشروع</h2>
+          <button
+            type="button"
+            class="icon-btn"
+            id="close-editor"
+            title="إغلاق"
+            aria-label="إغلاق"
+          >
+            <i data-lucide="x"></i>
+          </button>
+        </header>
+        <div class="editor-content">
+          <div id="project-fields">
+            <div class="field-row">
+              <div>
+                <label for="title-ar">اسم المشروع بالعربي</label
+                ><input id="title-ar" maxlength="160" required />
+              </div>
+              <div>
+                <label for="title-en">اسم المشروع بالإنجليزي</label
+                ><input id="title-en" maxlength="160" required dir="ltr" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div>
+                <label for="description-ar">الوصف بالعربي</label
+                ><textarea
+                  id="description-ar"
+                  rows="3"
+                  maxlength="4000"
+                ></textarea>
+              </div>
+              <div>
+                <label for="description-en">الوصف بالإنجليزي</label
+                ><textarea
+                  id="description-en"
+                  rows="3"
+                  maxlength="4000"
+                  dir="ltr"
+                ></textarea>
+              </div>
+            </div>
+            <label for="category">التصنيف</label
+            ><select id="category">
+              <option value="interior">ديكورات داخلية</option>
+              <option value="outdoor">مساحات خارجية</option>
+            </select>
+          </div>
+          <div id="slide-fields" hidden>
+            <div class="field-row">
+              <div>
+                <label for="alt-ar">وصف الصورة بالعربي</label
+                ><input id="alt-ar" maxlength="200" />
+              </div>
+              <div>
+                <label for="alt-en">وصف الصورة بالإنجليزي</label
+                ><input id="alt-en" maxlength="200" dir="ltr" />
+              </div>
+            </div>
+          </div>
+          <div id="publishing-fields" class="field-row">
+            <div>
+              <label for="position">ترتيب الظهور</label
+              ><input
+                id="position"
+                type="number"
+                min="0"
+                max="100000"
+                step="1"
+                value="0"
+                required
+              />
+            </div>
+            <label class="check-field"
+              ><input id="published" type="checkbox" />منشور على الموقع</label
+            >
+          </div>
+          <div class="upload-heading">
+            <h3 id="photos-title">صور المشروع</h3>
+            <label class="btn secondary upload-label"
+              ><i data-lucide="upload"></i><span>رفع صور</span
+              ><input
+                id="upload"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+            /></label>
+          </div>
+          <div id="upload-progress" role="status"></div>
+          <div id="editor-images" class="editor-images"></div>
+          <div id="mobile-photo-field" hidden>
+            <div class="upload-heading">
+              <h3>صورة الموبايل (اختياري)</h3>
+              <label class="btn secondary upload-label"
+                ><i data-lucide="smartphone"></i>رفع صورة<input
+                  id="mobile-upload"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+              /></label>
+            </div>
+            <div id="mobile-image"></div>
+          </div>
+          <p id="editor-error" class="error" role="alert"></p>
+        </div>
+        <footer class="dialog-footer">
+          <span id="save-state"></span
+          ><button type="button" class="btn secondary" id="cancel-editor">
+            إلغاء</button
+          ><button type="submit" class="btn primary" id="save-item">
+            <i data-lucide="save"></i>حفظ التغييرات
+          </button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog
+      id="confirm-dialog"
+      class="confirm-dialog"
+      aria-labelledby="confirm-title"
+    >
+      <h2 id="confirm-title">تأكيد الحذف</h2>
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button class="btn secondary" id="cancel-delete">إلغاء</button
+        ><button class="btn danger" id="confirm-delete">حذف</button>
+      </div>
+      <p id="delete-error" class="error" role="alert"></p>
+    </dialog>
+    <dialog
+      id="password-dialog"
+      class="confirm-dialog"
+      aria-labelledby="password-title"
+    >
+      <form id="password-form">
+        <h2 id="password-title">تغيير كلمة المرور</h2>
+        <label for="new-password">كلمة مرور جديدة</label
+        ><input
+          id="new-password"
+          type="password"
+          autocomplete="new-password"
+          minlength="12"
+          required
+          dir="ltr"
+        /><label for="repeat-password">تأكيد كلمة المرور</label
+        ><input
+          id="repeat-password"
+          type="password"
+          autocomplete="new-password"
+          minlength="12"
+          required
+          dir="ltr"
+        />
+        <p id="password-error" class="error" role="alert"></p>
+        <div class="confirm-actions">
+          <button type="button" id="cancel-password" class="btn secondary">
+            إلغاء</button
+          ><button type="submit" class="btn primary">حفظ</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

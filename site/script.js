@@ -257,7 +257,10 @@ try {
   language = localStorage.getItem("firestone-language") === "en" ? "en" : "ar";
 } catch {}
 let activeProject = 0;
-const projectNodes = $$(".project");
+let activePhoto = 0;
+let projectNodes = $$(".project");
+let managedProjects = null;
+let managedImages = {};
 const projectFiles = ["33", "14", "24", "31", "37", "27"];
 const lightbox = $(".lightbox");
 const serviceImages = ["33", "31", "27", "14"];
@@ -308,6 +311,7 @@ function setLanguage(next) {
   document.title = dictionary.title;
   $('meta[name="description"]').content = dictionary.description;
   updateServiceImage();
+  if (managedProjects) renderManagedProjects();
   if (lightbox.open) updateLightbox();
   try {
     localStorage.setItem("firestone-language", language);
@@ -345,13 +349,19 @@ $("[data-lang-toggle]").addEventListener("click", () =>
   setLanguage(language === "ar" ? "en" : "ar"),
 );
 
-const heroSlides = $$(".hero-slide");
+let heroSlides = $$(".hero-slide");
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 let slideIndex = 0;
 let slideTimer;
 function scheduleSlideshow() {
   clearInterval(slideTimer);
-  if (motionQuery.matches || document.hidden || lightbox.open) return;
+  if (
+    heroSlides.length < 2 ||
+    motionQuery.matches ||
+    document.hidden ||
+    lightbox.open
+  )
+    return;
   slideTimer = setInterval(() => {
     const next = (slideIndex + 1) % heroSlides.length;
     const nextImage = heroSlides[next].matches("img")
@@ -390,32 +400,60 @@ function visibleProjects() {
 }
 function updateLightbox() {
   const dictionary = copy[language];
-  $(".lightbox-image").src =
-    "assets/work-" + projectFiles[activeProject] + ".webp";
-  $(".lightbox-image").alt = dictionary["alt" + activeProject];
-  $("#lightbox-title").textContent = dictionary["projectTitle" + activeProject];
-  const visible = visibleProjects();
-  $(".lightbox-count").textContent =
-    `${visible.indexOf(activeProject) + 1} / ${visible.length}`;
+  const project = managedProjects?.[activeProject];
+  $(".lightbox-image").src = project
+    ? window.FirestoneCMS.imageUrl(project.images[activePhoto].url)
+    : "assets/work-" + projectFiles[activeProject] + ".webp";
+  $(".lightbox-image").alt = project
+    ? project.images[activePhoto]["alt_" + language] ||
+      project["title_" + language]
+    : dictionary["alt" + activeProject];
+  $("#lightbox-title").textContent = project
+    ? project["title_" + language]
+    : dictionary["projectTitle" + activeProject];
+  let description = $("#lightbox-description");
+  if (!description) {
+    description = document.createElement("p");
+    description.id = "lightbox-description";
+    $(".lightbox-image").after(description);
+  }
+  description.textContent = project?.["description_" + language] || "";
+  description.hidden = !description.textContent;
+  const visible = galleryEntries();
+  const index = visible.findIndex(
+    (entry) => entry.project === activeProject && entry.photo === activePhoto,
+  );
+  $(".lightbox-count").textContent = `${index + 1} / ${visible.length}`;
+}
+function galleryEntries() {
+  return visibleProjects().flatMap((index) =>
+    (managedProjects?.[index]?.images || [{}]).map((_, photo) => ({
+      project: index,
+      photo,
+    })),
+  );
 }
 function moveLightbox(direction) {
-  const visible = visibleProjects();
-  activeProject =
-    visible[
-      (visible.indexOf(activeProject) + direction + visible.length) %
-        visible.length
-    ];
+  const visible = galleryEntries();
+  if (!visible.length) return;
+  const index = visible.findIndex(
+    (entry) => entry.project === activeProject && entry.photo === activePhoto,
+  );
+  const next = visible[(index + direction + visible.length) % visible.length];
+  activeProject = next.project;
+  activePhoto = next.photo;
   updateLightbox();
 }
-$$("[data-project]").forEach((button) =>
-  button.addEventListener("click", () => {
-    activeProject = Number(button.dataset.project);
-    updateLightbox();
-    lightbox.showModal();
-    document.body.classList.add("modal-open");
-    scheduleSlideshow();
-  }),
-);
+$(".project-grid").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-project]");
+  if (!button) return;
+  activeProject = Number(button.dataset.project);
+  activePhoto = 0;
+  updateLightbox();
+  lightbox.showModal();
+  document.body.classList.add("modal-open");
+  scheduleSlideshow();
+});
 $(".lightbox-close").addEventListener("click", () => lightbox.close());
 $("[data-lightbox-prev]").addEventListener("click", () => moveLightbox(-1));
 $("[data-lightbox-next]").addEventListener("click", () => moveLightbox(1));
@@ -440,7 +478,9 @@ lightbox.addEventListener("keydown", (event) => {
   }
 });
 function updateServiceImage() {
-  $("#service-image").src = `assets/work-${serviceImages[activeService]}.webp`;
+  $("#service-image").src =
+    managedImages["service-" + activeService] ||
+    `assets/work-${serviceImages[activeService]}.webp`;
   $("#service-image").alt = copy[language][serviceAltKeys[activeService]];
 }
 $$(".service").forEach((service) =>
@@ -499,3 +539,121 @@ $("#year").textContent = new Date().getFullYear();
 setLanguage(language);
 if (window.lucide) lucide.createIcons({ attrs: { "aria-hidden": "true" } });
 scheduleSlideshow();
+
+function renderManagedProjects() {
+  const create = (tag, text, className) => {
+    const el = document.createElement(tag);
+    if (text !== undefined) el.textContent = text;
+    if (className) el.className = className;
+    return el;
+  };
+  const grid = $(".project-grid");
+  const fragment = document.createDocumentFragment();
+  managedProjects.forEach((project, index) => {
+    const article = create("article", undefined, "project");
+    article.dataset.category = project.category;
+    const button = create("button", undefined, "project-image");
+    button.type = "button";
+    button.dataset.project = index;
+    button.setAttribute(
+      "aria-label",
+      (language === "ar" ? "عرض: " : "View: ") + project["title_" + language],
+    );
+    const img = create("img");
+    img.src = window.FirestoneCMS.imageUrl(project.images[0].url);
+    img.alt =
+      project.images[0]["alt_" + language] || project["title_" + language];
+    img.loading = "lazy";
+    img.width = 1080;
+    img.height = 1350;
+    const expand = create("span", undefined, "image-open");
+    const icon = create("i");
+    icon.dataset.lucide = "expand";
+    expand.append(icon);
+    button.append(img, expand);
+    const caption = create("div", undefined, "project-caption");
+    const text = create("div");
+    text.append(
+      create(
+        "p",
+        copy[language][
+          project.category === "outdoor" ? "outdoorTag" : "interiorTag"
+        ],
+      ),
+      create("h3", project["title_" + language]),
+    );
+    caption.append(
+      text,
+      create("span", String(index + 1).padStart(2, "0"), "project-index"),
+    );
+    article.append(button, caption);
+    fragment.append(article);
+  });
+  grid.replaceChildren(fragment);
+  projectNodes = $$(".project");
+  const filter = $("[data-filter].is-active")?.dataset.filter || "all";
+  projectNodes.forEach(
+    (project) =>
+      (project.hidden =
+        filter !== "all" && project.dataset.category !== filter),
+  );
+  $(".work-count").textContent = String(
+    projectNodes.filter((project) => !project.hidden).length,
+  ).padStart(2, "0");
+  if (window.lucide) lucide.createIcons({ attrs: { "aria-hidden": "true" } });
+}
+async function loadManagedContent() {
+  if (!window.FirestoneCMS?.client) return;
+  try {
+    const content = await window.FirestoneCMS.getContent();
+    managedProjects = content.projects
+      .map((project) => ({
+        ...project,
+        images: project.images.filter((image) =>
+          window.FirestoneCMS.imageUrl(image.url),
+        ),
+      }))
+      .filter((project) => project.images.length);
+    if (lightbox.open) lightbox.close();
+    renderManagedProjects();
+    const slides = content.slides.filter((slide) =>
+      window.FirestoneCMS.imageUrl(slide.image_url),
+    );
+    const fragment = document.createDocumentFragment();
+    slides.forEach((slide, index) => {
+      const picture = document.createElement("picture");
+      picture.className = "hero-slide" + (index === 0 ? " is-active" : "");
+      const mobile = window.FirestoneCMS.imageUrl(slide.mobile_url);
+      if (mobile) {
+        const source = document.createElement("source");
+        source.media = "(max-width: 660px)";
+        source.srcset = mobile;
+        picture.append(source);
+      }
+      const img = document.createElement("img");
+      img.src = window.FirestoneCMS.imageUrl(slide.image_url);
+      img.alt = "";
+      picture.append(img);
+      fragment.append(picture);
+    });
+    clearInterval(slideTimer);
+    $(".hero-slideshow").replaceChildren(fragment);
+    heroSlides = $$(".hero-slide");
+    slideIndex = 0;
+    scheduleSlideshow();
+    managedImages = Object.fromEntries(
+      content.images
+        .map((row) => [row.slot, window.FirestoneCMS.imageUrl(row.image_url)])
+        .filter(([, url]) => url),
+    );
+    if (managedImages.logo)
+      $$(".brand img").forEach((img) => (img.src = managedImages.logo));
+    if (managedImages.banner)
+      $(".detail-banner>img").src = managedImages.banner;
+    updateServiceImage();
+    document.documentElement.dataset.cms = "ready";
+  } catch {
+    document.documentElement.dataset.cms = "fallback";
+  }
+}
+loadManagedContent();
