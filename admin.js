@@ -267,7 +267,7 @@
   const contactFields = [
     ["phone", "رقم الهاتف (للاتصال)", "+962798202604", "tel"],
     ["whatsapp", "رقم الواتساب", "962798202604", "tel"],
-    ["instagram", "رابط إنستجرام", "https://www.instagram.com/firestonejo_/", "url"],
+    ["instagram", "رابط إنستجرام", "https://www.instagram.com/_firestonejo/", "url"],
     ["facebook", "رابط فيسبوك", "https://facebook.com/...", "url"],
     ["tiktok", "رابط تيك توك (اختياري)", "https://www.tiktok.com/@...", "url"],
     ["email", "البريد الإلكتروني (اختياري)", "info@firestonejo.com", "email"],

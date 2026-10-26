@@ -3,6 +3,17 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.firestonejo.com"
+        }
+      ],
+      "destination": "https://firestonejo.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/Admin",
       "destination": "/admin",
       "permanent": true
@@ -34,6 +45,16 @@
           "value": "public, max-age=604800, stale-while-revalidate=86400"
         }
       ]
+    },
+    {
+      "source": "/review",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
-  ]
+  ],
+  "trailingSlash": false
 }
