@@ -12,7 +12,7 @@
         })
       : null;
   // Bump when files in /assets are replaced under the same name, so browsers skip the 7-day cache.
-  const assetVersion = "20261026b";
+  const assetVersion = "20261026c";
   function imageUrl(value) {
     if (typeof value !== "string") return "";
     if (/^\/?assets\/[a-zA-Z0-9._-]+$/.test(value))
