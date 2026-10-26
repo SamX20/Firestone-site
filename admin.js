@@ -6,11 +6,13 @@
     projects: "firestone_projects",
     slides: "firestone_slides",
     images: "firestone_images",
+    testimonials: "firestone_testimonials",
   };
   const titles = {
     projects: "المشاريع",
     slides: "صور الهيرو",
     images: "صور الأقسام والشعار",
+    testimonials: "آراء الزبائن",
   };
   const slots = {
     logo: "شعار الموقع",
@@ -117,7 +119,9 @@
       query =
         tab === "images"
           ? query.order("slot")
-          : query.order("position").order("id");
+          : tab === "testimonials"
+            ? query.order("created_at", { ascending: false })
+            : query.order("position").order("id");
       const result = await query;
       if (result.error) throw result.error;
       if (version !== loadVersion) return;
@@ -142,7 +146,16 @@
       status = $("#status-filter").value;
     const filtered = rows.filter(
       (row) =>
-        [row.title_ar, row.title_en, row.alt_ar, row.alt_en, slots[row.slot]]
+        [
+          row.title_ar,
+          row.title_en,
+          row.alt_ar,
+          row.alt_en,
+          slots[row.slot],
+          row.name,
+          row.area,
+          row.body,
+        ]
           .filter(Boolean)
           .join(" ")
           .toLowerCase()
@@ -168,6 +181,10 @@
       });
       $("#content-list").append(list);
       icons();
+      return;
+    }
+    if (tab === "testimonials") {
+      renderTestimonials(filtered);
       return;
     }
     const table = node("table", undefined, "list-table");
@@ -227,6 +244,74 @@
     table.append(body);
     $("#content-list").append(table);
     icons();
+  }
+  function renderTestimonials(filtered) {
+    const link = location.origin + "/review";
+    const share = node("div", undefined, "share-link");
+    share.append(
+      node("p", "أرسل هذا الرابط للزبون ليكتب رأيه:"),
+      node("code", link),
+    );
+    const copyButton = node("button", "نسخ الرابط", "btn secondary");
+    copyButton.type = "button";
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(link);
+        toast("تم نسخ الرابط.");
+      } catch {
+        toast(link);
+      }
+    });
+    share.append(copyButton);
+    const list = node("div", undefined, "testimonial-list");
+    filtered.forEach((row) => {
+      const item = node("article", undefined, "testimonial-item");
+      const meta = [
+        row.show_name ? row.name : row.name + " (بدون نشر الاسم)",
+        row.area,
+        row.project,
+        new Date(row.created_at).toLocaleDateString("ar-JO"),
+      ].filter(Boolean);
+      const info = node("div");
+      info.append(
+        node("p", row.body, "testimonial-body"),
+        node("p", meta.join(" · "), "item-subtitle"),
+      );
+      const side = node("div", undefined, "row-actions");
+      side.append(
+        node(
+          "span",
+          row.published ? "منشور" : "بانتظار المراجعة",
+          "badge " + (row.published ? "" : "draft"),
+        ),
+        action(
+          row.published ? "eye-off" : "eye",
+          row.published ? "إخفاء من الموقع" : "نشر على الموقع",
+          () => togglePublished(row),
+        ),
+        action("trash-2", "حذف", () => confirmDelete(row), "delete"),
+      );
+      item.append(info, side);
+      list.append(item);
+    });
+    $("#content-list").append(share, list);
+    icons();
+  }
+  async function togglePublished(row) {
+    try {
+      const result = await client
+        .from(tables.testimonials)
+        .update({ published: !row.published })
+        .eq("id", row.id)
+        .eq("updated_at", row.updated_at)
+        .select("id");
+      if (result.error) throw result.error;
+      if (result.data.length !== 1) throw new Error("CONFLICT");
+      toast(row.published ? "تم إخفاء الرأي." : "تم نشر الرأي على الموقع.");
+      await load();
+    } catch (error) {
+      $("#page-error").textContent = errorMessage(error);
+    }
   }
   function showDialog(dialog) {
     dialog.showModal();
@@ -497,7 +582,7 @@
     pendingDelete = { row, table: tables[tab] };
     $("#delete-error").textContent = "";
     $("#confirm-message").textContent =
-      `حذف «${row.title_ar || row.alt_ar || "صورة الهيرو"}»؟ سيُزال من الموقع ولا يمكن التراجع عن الحذف.`;
+      `حذف «${row.title_ar || row.alt_ar || row.name || "صورة الهيرو"}»؟ سيُزال من الموقع ولا يمكن التراجع عن الحذف.`;
     showDialog($("#confirm-dialog"));
   }
   $("#confirm-delete").addEventListener("click", async () => {
@@ -535,7 +620,7 @@
         el.classList.toggle("active", el === button),
       );
       $("#view-title").textContent = titles[tab];
-      $("#add-item").hidden = tab === "images";
+      $("#add-item").hidden = tab === "images" || tab === "testimonials";
       $("#status-filter").hidden = tab === "images";
       $("#add-item span").textContent =
         tab === "projects" ? "إضافة مشروع" : "إضافة صورة";

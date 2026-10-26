@@ -105,6 +105,9 @@ workFooter: "لكل بيت حكاية. ما حكاية بيتك؟",
     bannerKicker: "مساحتك، بطريقتك.",
     bannerTitle: "مكان للّحظات\nالتي تستحق.",
     faqKicker: "قبل أن نبدأ",
+    testimonialsKicker: "آراء زبائننا",
+    testimonialsTitle: "ثقة نعتزّ فيها.",
+    clientFrom: "زبون من {area}",
     faqTitle: "أسئلة في بالك؟",
     faq0Question: "كيف أعرف تكلفة المشروع؟",
     faq0Answer:
@@ -253,6 +256,9 @@ workFooter: "Every home has a story. What is yours?",
     bannerKicker: "YOUR SPACE. YOUR WAY.",
     bannerTitle: "For the moments\nthat matter.",
     faqKicker: "BEFORE WE BEGIN",
+    testimonialsKicker: "CLIENT WORDS",
+    testimonialsTitle: "Trust we're proud of.",
+    clientFrom: "Client from {area}",
     faqTitle: "A few things to know.",
     faq0Question: "How much will my project cost?",
     faq0Answer:
@@ -697,6 +703,52 @@ function renderManagedProjects() {
   updateWorkMore();
   if (window.lucide) lucide.createIcons({ attrs: { "aria-hidden": "true" } });
 }
+let testimonials = [];
+function renderTestimonials() {
+  const section = $("#testimonials");
+  section.hidden = !testimonials.length;
+  const cards = testimonials.map((row) => {
+    const card = document.createElement("figure");
+    card.className = "testimonial";
+    card.lang = "ar";
+    card.dir = "rtl";
+    const quote = document.createElement("blockquote");
+    quote.textContent = row.body;
+    const caption = document.createElement("figcaption");
+    const who = document.createElement("strong");
+    who.textContent = row.show_name
+      ? row.name
+      : copy.ar.clientFrom.replace("{area}", row.area || "الأردن");
+    caption.append(who);
+    const detail = [row.show_name ? row.area : "", row.project]
+      .filter(Boolean)
+      .join(" · ");
+    if (detail) {
+      const span = document.createElement("span");
+      span.textContent = detail;
+      caption.append(span);
+    }
+    card.append(quote, caption);
+    return card;
+  });
+  $(".testimonial-grid").replaceChildren(...cards);
+}
+async function loadTestimonials() {
+  const client = window.FirestoneCMS?.client;
+  if (!client) return;
+  try {
+    const { data, error } = await client
+      .from("firestone_testimonials")
+      .select("name, area, project, body, show_name")
+      .eq("published", true)
+      .order("position")
+      .order("created_at", { ascending: false })
+      .limit(9);
+    if (error) throw error;
+    testimonials = data;
+    renderTestimonials();
+  } catch {}
+}
 async function loadManagedContent() {
   if (!window.FirestoneCMS?.client) return;
   try {
@@ -755,3 +807,4 @@ async function loadManagedContent() {
   }
 }
 loadManagedContent();
+loadTestimonials();

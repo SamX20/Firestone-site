@@ -1716,3 +1716,55 @@ body.modal-open {
     font-size: 13px;
   }
 }
+.testimonials {
+  background: #eff2ed;
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.testimonial {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 26px;
+  padding: 32px 30px;
+  background: var(--paper);
+  border-top: 3px solid var(--yellow);
+  font-family: Tajawal, Arial, sans-serif;
+}
+.testimonial blockquote {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.75;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.testimonial blockquote::before {
+  content: "”";
+  display: block;
+  font:
+    600 54px/0.6 Manrope,
+    serif;
+  color: var(--yellow);
+  margin-bottom: 14px;
+}
+.testimonial figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.testimonial figcaption span {
+  color: var(--muted);
+  font-size: 14px;
+}
+@media (max-width: 660px) {
+  .testimonial {
+    padding: 26px 22px;
+  }
+  .testimonial blockquote {
+    font-size: 17px;
+  }
+}

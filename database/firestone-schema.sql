@@ -62,3 +62,27 @@ revoke execute on function public.firestone_touch_updated_at() from public,anon,
 create trigger touch_projects before update on public.firestone_projects for each row execute function public.firestone_touch_updated_at();
 create trigger touch_slides before update on public.firestone_slides for each row execute function public.firestone_touch_updated_at();
 create trigger touch_images before update on public.firestone_images for each row execute function public.firestone_touch_updated_at();
+
+-- Customer testimonials: anyone can submit (always unpublished), admins review and publish.
+create table public.firestone_testimonials (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (length(trim(name)) between 1 and 80),
+  area text not null default '' check (length(area) <= 80),
+  project text not null default '' check (length(project) <= 120),
+  body text not null check (length(trim(body)) between 5 and 1000),
+  show_name boolean not null default true,
+  published boolean not null default false,
+  position integer not null default 0 check (position between 0 and 100000),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index firestone_testimonials_order on public.firestone_testimonials (position, created_at) where published;
+alter table public.firestone_testimonials enable row level security;
+revoke all on public.firestone_testimonials from anon, authenticated;
+grant insert (name, area, project, body, show_name) on public.firestone_testimonials to anon, authenticated;
+grant select (id, name, area, project, body, show_name, published, position, created_at, updated_at) on public.firestone_testimonials to anon, authenticated;
+grant update, delete on public.firestone_testimonials to authenticated;
+create policy "Submit testimonial" on public.firestone_testimonials for insert to anon, authenticated with check (published = false and position = 0);
+create policy "Read published testimonials" on public.firestone_testimonials for select to anon, authenticated using (published);
+create policy "Manage testimonials" on public.firestone_testimonials for all to authenticated using (exists(select 1 from public.firestone_admins where user_id = (select auth.uid()))) with check (exists(select 1 from public.firestone_admins where user_id = (select auth.uid())));
+create trigger touch_testimonials before update on public.firestone_testimonials for each row execute function public.firestone_touch_updated_at();

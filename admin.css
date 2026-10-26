@@ -833,3 +833,47 @@ body.dialog-open {
     font-size: 22px;
   }
 }
+.share-link {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.share-link code {
+  direction: ltr;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.testimonial-list {
+  display: grid;
+  gap: 12px;
+}
+.testimonial-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.testimonial-body {
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.testimonial-item .row-actions {
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+}
+@media (max-width: 660px) {
+  .testimonial-item {
+    flex-direction: column;
+  }
+}

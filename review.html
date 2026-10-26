@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#161817" />
+    <meta name="robots" content="noindex" />
+    <title>شاركنا رأيك | Firestone Jo</title>
+    <meta
+      name="description"
+      content="شاركنا رأيك بتجربتك مع أبو سامر وفريق فايرستون للديكور."
+    />
+    <meta property="og:title" content="شاركنا رأيك | Firestone Jo" />
+    <meta
+      property="og:description"
+      content="كيف كانت تجربتك مع أبو سامر وفريق فايرستون؟ دقيقة وحدة من وقتك."
+    />
+    <meta
+      property="og:image"
+      content="https://firestonejo.com/assets/work-33-hero.webp"
+    />
+    <link rel="icon" href="/assets/firestone-logo-mark.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/review.css" />
+    <script src="/assets/supabase.js" defer></script>
+    <script src="/cms-config.js" defer></script>
+    <script src="/cms.js" defer></script>
+    <script src="/review.js" defer></script>
+  </head>
+  <body class="review-page">
+    <header class="review-header">
+      <a href="/" aria-label="Firestone Jo"
+        ><img
+          src="/assets/firestone-logo-mark.png"
+          alt="Firestone"
+          width="194"
+          height="43"
+      /></a>
+    </header>
+    <main class="review-main">
+      <img
+        class="review-cover"
+        src="/assets/work-33-hero.webp"
+        alt=""
+        width="1920"
+        height="1080"
+      />
+      <section class="review-card">
+        <p class="section-kicker">رأيك يهمّنا</p>
+        <h1>كيف كانت تجربتك مع أبو سامر وفريق فايرستون؟</h1>
+        <p class="review-intro">
+          فايرستون هو الاسم الجديد لأعمال أبو سامر في الديكور. رأيك بيساعد ناس
+          جداد يتعرّفوا علينا، وما بياخد أكتر من دقيقة.
+        </p>
+        <form id="review-form" novalidate>
+          <div class="form-field">
+            <label for="review-name">الاسم</label
+            ><input
+              id="review-name"
+              name="name"
+              autocomplete="name"
+              maxlength="80"
+              placeholder="مثلاً: أبو محمد الخطيب"
+              required
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="review-area">المنطقة</label
+              ><select id="review-area" name="area">
+                <option>عمّان</option>
+                <option>مأدبا</option>
+                <option>ناعور</option>
+                <option>مرج الحمام</option>
+                <option>منطقة أخرى</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="review-project"
+                >شو نفّذنالك؟ <span>(اختياري)</span></label
+              ><select id="review-project" name="project">
+                <option value="">اختر</option>
+                <option>فاير بليس أو ديكور شاشة</option>
+                <option>كلادنغ أو بديل رخام</option>
+                <option>ديكورات داخلية أو غرف نوم</option>
+                <option>جلسة خارجية أو شواء أو شلال</option>
+                <option>شي ثاني</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="review-body">رأيك بالشغل</label
+            ><textarea
+              id="review-body"
+              name="body"
+              rows="4"
+              maxlength="1000"
+              placeholder="كيف كان التعامل، الالتزام، وشكل الشغل بعد التنفيذ؟"
+              required
+            ></textarea>
+          </div>
+          <label class="review-check"
+            ><input id="review-show-name" type="checkbox" checked />موافق
+            تنشروا اسمي مع الرأي</label
+          >
+          <p class="review-note">
+            إذا ما بدك، منكتب بس "زبون من" منطقتك.
+          </p>
+          <div class="review-trap" aria-hidden="true">
+            <label for="review-website">Website</label
+            ><input id="review-website" tabindex="-1" autocomplete="off" />
+          </div>
+          <p id="review-error" class="review-error" role="alert"></p>
+          <button type="submit" class="btn btn-yellow" id="review-submit">
+            <span>إرسال الرأي</span>
+          </button>
+        </form>
+        <div id="review-thanks" class="review-thanks" hidden>
+          <h2>شكراً كتير! 🙏</h2>
+          <p>
+            وصل رأيك لأبو سامر وفريق فايرستون. وجودك معنا من البداية بيعنيلنا
+            الكثير.
+          </p>
+          <a class="btn btn-light" href="/"><span>شوف أعمالنا</span></a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
