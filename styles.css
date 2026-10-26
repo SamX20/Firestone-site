@@ -1671,3 +1671,48 @@ body.modal-open {
     padding: 10px 12px;
   }
 }
+.about-stats {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin: 30px 0 0;
+  padding-top: 35px;
+  border-top: 1px solid var(--line);
+}
+.about-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.about-stats dd {
+  order: -1;
+}
+.about-stats dd {
+  margin: 0;
+  font:
+    600 54px/1 Manrope,
+    sans-serif;
+  text-align: start;
+}
+.about-stats dt {
+  color: var(--muted);
+  font-size: 16px;
+}
+@media (max-width: 1200px) {
+  .about-stats {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 660px) {
+  .about-stats {
+    gap: 14px;
+    padding-top: 25px;
+  }
+  .about-stats dd {
+    font-size: 36px;
+  }
+  .about-stats dt {
+    font-size: 13px;
+  }
+}

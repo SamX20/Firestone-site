@@ -24,6 +24,9 @@ const copy = {
     aboutCopy:
       "البيت الجميل يبدأ بفهم من يعيش فيه. في فايرستون، نجمع الخامات والإضاءة والتشطيب في تصميم يناسب ذوقك وطريقة حياتك، ونتابع تفاصيله من الفكرة حتى التركيب.",
     ourExpertise: "تعرّف على خدماتنا",
+    statYears: "سنوات خبرة في الديكور",
+    statProjects: "مشروعاً منفّذاً",
+    statAreas: "مناطق نخدمها في الأردن",
     workKicker: "من أعمالنا",
     workTitle: "من الفكرة إلى الواقع.",
     workDescription:
@@ -168,6 +171,9 @@ workFooter: "لكل بيت حكاية. ما حكاية بيتك؟",
     aboutCopy:
       "A beautiful home starts with the people who live in it. At Firestone, we bring materials, lighting and finishes together around your taste and daily life, from the first idea to the final installation.",
     ourExpertise: "Discover our expertise",
+    statYears: "Years of decor experience",
+    statProjects: "Projects completed",
+    statAreas: "Areas served in Jordan",
     workKicker: "SELECTED WORK",
     workTitle: "Ideas, made real.",
     workDescription:
