@@ -318,14 +318,14 @@ let projectNodes = $$(".project");
 let managedProjects = null;
 let managedImages = {};
 const projectFiles = [
-  "33", "14", "24", "31", "37", "27", "12", "17", "26", "30", "38", "20",
+  "33", "24", "31", "37", "27", "12", "17", "26", "30", "38", "20",
 ];
 const whatsappUrl = "https://wa.me/962798202604";
 const collapsedCount = 6;
 let workExpanded = false;
 const lightbox = $(".lightbox");
-const serviceImages = ["33", "31", "27", "14"];
-const serviceAltKeys = ["alt0", "alt3", "alt5", "alt1"];
+const serviceImages = ["33", "31", "27", "17"];
+const serviceAltKeys = ["alt0", "alt3", "alt5", "alt7"];
 let activeService = 0;
 
 function setLanguage(next) {
