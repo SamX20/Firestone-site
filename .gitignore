@@ -4,3 +4,4 @@
 .vercel/
 .env*
 site/server.*.log
+/site/
