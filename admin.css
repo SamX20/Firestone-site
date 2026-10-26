@@ -1,12 +1,12 @@
 @font-face {
   font-family: Tajawal;
-  src: url("/assets/tajawal-regular.ttf") format("truetype");
+  src: url("/assets/tajawal-regular.woff2") format("woff2");
   font-weight: 400 500;
   font-display: swap;
 }
 @font-face {
   font-family: Tajawal;
-  src: url("/assets/tajawal-bold.ttf") format("truetype");
+  src: url("/assets/tajawal-bold.woff2") format("woff2");
   font-weight: 600 900;
   font-display: swap;
 }

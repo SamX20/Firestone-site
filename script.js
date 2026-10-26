@@ -10,7 +10,7 @@ const copy = {
     navProcess: "خطوات العمل",
     startProject: "لنبدأ مشروعك",
     heroEyebrow: "ديكورات داخلية وخارجية",
-    heroOverline: "تفاصيل تُشبهك. ومساحة تحبّها.",
+    heroOverline: "فاير بليس، بديل رخام وديكورات داخلية وخارجية في عمّان",
     heroCopy:
       "من دفء الفاير بليس إلى أناقة الرخام، نصمّم وننفّذ تفاصيل تصنع الفرق في بيتك.",
     exploreWork: "اكتشف أعمالنا",
@@ -47,7 +47,28 @@ const copy = {
     alt3: "واجهة رخامية محاطة بإضاءة مخفية وكلادنغ",
     alt4: "شواء رخامي مع حوض على سطح مفتوح",
     alt5: "ديكور شاشة من الرخام والكسوات مع تفاصيل مرايا",
-    workFooter: "لكل بيت حكاية. ما حكاية بيتك؟",
+    heroWhatsapp: "اطلب عرض سعر على واتساب",
+    showMore: "عرض المزيد من الأعمال",
+    showLess: "عرض أعمال أقل",
+    lightboxWhatsapp: "أريد تصميماً مشابهاً",
+    callNow: "اتصل الآن",
+    whatsappShort: "واتساب",
+    quickContact: "تواصل سريع",
+    waGreeting: "مرحباً فايرستون، أريد الاستفسار عن مشروع ديكور.",
+    waProject: "مرحباً فايرستون، أعجبني مشروع \"{title}\" على موقعكم وأريد تصميماً مشابهاً.",
+    projectTitle6: "حجر طبيعي ودفء النار",
+    projectTitle7: "أمسية تحت الأضواء",
+    projectTitle8: "بياض الرخام بهدوء",
+    projectTitle9: "رخام وخشب في مشهد واحد",
+    projectTitle10: "ركن الشواء المثالي",
+    projectTitle11: "خطوط داكنة بأناقة",
+    alt6: "فاير بليس مع كسوة حجر طبيعي ورفوف مضاءة",
+    alt7: "جلسة خارجية مع شواء حجري وإضاءة دافئة وأزهار",
+    alt8: "فاير بليس أبيض بنقشة رخام وإضاءة جانبية",
+    alt9: "جدار شاشة من بديل الرخام مع كسوة خشبية وإضاءة مخفية",
+    alt10: "شواء خارجي حجري في ساحة منزلية",
+    alt11: "وحدة شاشة بكسوة خشبية داكنة ورف زجاجي مضاء",
+workFooter: "لكل بيت حكاية. ما حكاية بيتك؟",
     moreInstagram: "المزيد على إنستجرام",
     servicesKicker: "خبراتنا",
     servicesTitle: "تفاصيل متكاملة.\nمن الداخل إلى الخارج.",
@@ -118,9 +139,9 @@ const copy = {
     close: "إغلاق",
     previous: "الصورة السابقة",
     next: "الصورة التالية",
-    title: "Firestone Jo | تصميم وتنفيذ الديكورات",
+    title: "فاير بليس وبديل رخام وديكورات في عمّان | Firestone Jo",
     description:
-      "فايرستون: تصميم وتنفيذ ديكورات داخلية وخارجية، فاير بليس، كلادنغ وبديل رخام. نخدم عمّان ومأدبا وناعور ومرج الحمام.",
+      "فايرستون للديكور: تصميم وتنفيذ فاير بليس، ديكورات شاشة، كلادنغ وبديل رخام، وجلسات ومطابخ شواء خارجية. نخدم عمّان ومأدبا وناعور ومرج الحمام. اطلب عرضك عبر واتساب.",
   },
   en: {
     skip: "Skip to selected work",
@@ -133,7 +154,7 @@ const copy = {
     navProcess: "The process",
     startProject: "Start a project",
     heroEyebrow: "INTERIOR & EXTERIOR DESIGN",
-    heroOverline: "Considered spaces. Distinctive details.",
+    heroOverline: "Fireplaces, marble alternatives and interior & exterior decor in Amman",
     heroCopy:
       "From the warmth of a fireplace to the character of marble. We design and build the details that make a home yours.",
     exploreWork: "Explore our work",
@@ -170,7 +191,28 @@ const copy = {
     alt3: "Marble feature wall framed by concealed lighting and cladding",
     alt4: "Rooftop marble barbecue and sink",
     alt5: "Marble and cladding TV wall with mirror accents",
-    workFooter: "Every home has a story. What is yours?",
+    heroWhatsapp: "Get a quote on WhatsApp",
+    showMore: "Show more work",
+    showLess: "Show less",
+    lightboxWhatsapp: "I want something similar",
+    callNow: "Call now",
+    whatsappShort: "WhatsApp",
+    quickContact: "Quick contact",
+    waGreeting: "Hello Firestone, I'd like to ask about a decor project.",
+    waProject: "Hello Firestone, I liked the \"{title}\" project on your website and would like something similar.",
+    projectTitle6: "Natural stone, warm fire",
+    projectTitle7: "An evening in the glow",
+    projectTitle8: "Quiet white marble",
+    projectTitle9: "Marble and wood, together",
+    projectTitle10: "The perfect grill corner",
+    projectTitle11: "Dark lines, refined",
+    alt6: "Fireplace with natural stone cladding and lit shelves",
+    alt7: "Outdoor seating with a stone barbecue, warm lighting and flowers",
+    alt8: "White marble-look fireplace with side lighting",
+    alt9: "Marble-alternative TV wall with wood cladding and concealed lighting",
+    alt10: "Stone outdoor barbecue in a home courtyard",
+    alt11: "TV unit with dark wood cladding and a lit glass shelf",
+workFooter: "Every home has a story. What is yours?",
     moreInstagram: "More on Instagram",
     servicesKicker: "OUR EXPERTISE",
     servicesTitle: "Every detail.\nInside and out.",
@@ -243,7 +285,7 @@ const copy = {
     close: "Close",
     previous: "Previous image",
     next: "Next image",
-    title: "Firestone Jo | Interior & Exterior Design",
+    title: "Fireplaces, Marble Alternatives & Decor in Amman | Firestone Jo",
     description:
       "Interior and exterior decor by Firestone Jo. Fireplaces, TV walls, cladding and marble alternatives in Amman, Madaba, Naour and Marj Al Hamam.",
   },
@@ -253,15 +295,22 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 const menuButton = $(".menu-toggle");
 const nav = $(".main-nav");
 let language = "ar";
+const languageParam = new URLSearchParams(location.search).get("lang");
 try {
   language = localStorage.getItem("firestone-language") === "en" ? "en" : "ar";
 } catch {}
+if (languageParam === "en" || languageParam === "ar") language = languageParam;
 let activeProject = 0;
 let activePhoto = 0;
 let projectNodes = $$(".project");
 let managedProjects = null;
 let managedImages = {};
-const projectFiles = ["33", "14", "24", "31", "37", "27"];
+const projectFiles = [
+  "33", "14", "24", "31", "37", "27", "12", "17", "26", "30", "38", "20",
+];
+const whatsappUrl = "https://wa.me/962798202604";
+const collapsedCount = 6;
+let workExpanded = false;
 const lightbox = $(".lightbox");
 const serviceImages = ["33", "31", "27", "14"];
 const serviceAltKeys = ["alt0", "alt3", "alt5", "alt1"];
@@ -308,6 +357,10 @@ function setLanguage(next) {
     "aria-label",
     dictionary[nav.classList.contains("is-open") ? "closeMenu" : "menu"],
   );
+  $$("[data-wa-source]").forEach((link) => {
+    link.href = whatsappUrl + "?text=" + encodeURIComponent(dictionary.waGreeting);
+  });
+  updateWorkMore();
   document.title = dictionary.title;
   $('meta[name="description"]').content = dictionary.description;
   updateServiceImage();
@@ -316,6 +369,12 @@ function setLanguage(next) {
   try {
     localStorage.setItem("firestone-language", language);
   } catch {}
+  const url = new URL(location.href);
+  if (language === "en") url.searchParams.set("lang", "en");
+  else url.searchParams.delete("lang");
+  history.replaceState(history.state, "", url);
+  $('link[rel="canonical"]').href =
+    "https://firestonejo.com/" + (language === "en" ? "?lang=en" : "");
 }
 function closeMenu() {
   nav.classList.remove("is-open");
@@ -391,8 +450,31 @@ $$("[data-filter]").forEach((button) =>
     $(".work-count").textContent = String(
       projectNodes.filter((project) => !project.hidden).length,
     ).padStart(2, "0");
+    updateWorkMore();
   }),
 );
+function updateWorkMore() {
+  const shown = projectNodes.filter((project) => !project.hidden);
+  shown.forEach((project, index) =>
+    project.classList.toggle(
+      "is-extra",
+      !workExpanded && index >= collapsedCount,
+    ),
+  );
+  projectNodes
+    .filter((project) => project.hidden)
+    .forEach((project) => project.classList.remove("is-extra"));
+  const more = $(".work-more");
+  more.hidden = shown.length <= collapsedCount;
+  more.querySelector("span").textContent =
+    copy[language][workExpanded ? "showLess" : "showMore"];
+  more.querySelector("i, svg")?.classList.toggle("is-open", workExpanded);
+}
+$(".work-more").addEventListener("click", () => {
+  workExpanded = !workExpanded;
+  updateWorkMore();
+  if (!workExpanded) $("#work").scrollIntoView();
+});
 function visibleProjects() {
   return projectNodes
     .map((node, index) => (!node.hidden ? index : -1))
@@ -418,6 +500,12 @@ function updateLightbox() {
     $(".lightbox-image").after(description);
   }
   description.textContent = project?.["description_" + language] || "";
+  $(".lightbox-whatsapp").href =
+    whatsappUrl +
+    "?text=" +
+    encodeURIComponent(
+      dictionary.waProject.replace("{title}", $("#lightbox-title").textContent),
+    );
   description.hidden = !description.textContent;
   const visible = galleryEntries();
   const index = visible.findIndex(
@@ -600,6 +688,7 @@ function renderManagedProjects() {
   $(".work-count").textContent = String(
     projectNodes.filter((project) => !project.hidden).length,
   ).padStart(2, "0");
+  updateWorkMore();
   if (window.lucide) lucide.createIcons({ attrs: { "aria-hidden": "true" } });
 }
 async function loadManagedContent() {
@@ -614,8 +703,9 @@ async function loadManagedContent() {
         ),
       }))
       .filter((project) => project.images.length);
+    if (!managedProjects.length) managedProjects = null;
     if (lightbox.open) lightbox.close();
-    renderManagedProjects();
+    if (managedProjects) renderManagedProjects();
     const slides = content.slides.filter((slide) =>
       window.FirestoneCMS.imageUrl(slide.image_url),
     );
@@ -636,11 +726,13 @@ async function loadManagedContent() {
       picture.append(img);
       fragment.append(picture);
     });
-    clearInterval(slideTimer);
-    $(".hero-slideshow").replaceChildren(fragment);
-    heroSlides = $$(".hero-slide");
-    slideIndex = 0;
-    scheduleSlideshow();
+    if (slides.length) {
+      clearInterval(slideTimer);
+      $(".hero-slideshow").replaceChildren(fragment);
+      heroSlides = $$(".hero-slide");
+      slideIndex = 0;
+      scheduleSlideshow();
+    }
     managedImages = Object.fromEntries(
       content.images
         .map((row) => [row.slot, window.FirestoneCMS.imageUrl(row.image_url)])
