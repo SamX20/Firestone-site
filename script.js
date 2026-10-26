@@ -806,5 +806,41 @@ async function loadManagedContent() {
     document.documentElement.dataset.cms = "fallback";
   }
 }
+// Hide images until they arrive so slow connections see a placeholder, not a blank box.
+const loadingImages =
+  ".project-image img, .service-visual img, .detail-banner > img";
+function markLoading(img) {
+  if (!img.complete) img.dataset.loading = "";
+}
+document.addEventListener(
+  "load",
+  (event) => event.target.removeAttribute?.("data-loading"),
+  true,
+);
+document.addEventListener(
+  "error",
+  (event) => event.target.removeAttribute?.("data-loading"),
+  true,
+);
+$$(loadingImages).forEach(markLoading);
+new MutationObserver((records) =>
+  records.forEach((record) => {
+    if (record.type === "attributes") {
+      if (record.target.matches(loadingImages)) markLoading(record.target);
+      return;
+    }
+    record.addedNodes.forEach((added) => {
+      if (added.nodeType !== 1) return;
+      [added, ...added.querySelectorAll("img")]
+        .filter((img) => img.matches(loadingImages))
+        .forEach(markLoading);
+    });
+  }),
+).observe(document.body, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ["src"],
+});
 loadManagedContent();
 loadTestimonials();

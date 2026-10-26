@@ -1768,3 +1768,45 @@ body.modal-open {
     font-size: 17px;
   }
 }
+/* Image loading placeholder: only visible while an image is still downloading */
+img[data-loading] {
+  opacity: 0;
+}
+.project-image img,
+.service-visual img,
+.detail-banner > img {
+  transition:
+    opacity 0.45s ease,
+    transform 0.8s ease;
+}
+.project-image:has(img[data-loading]),
+.service-visual:has(img[data-loading]),
+.detail-banner:has(> img[data-loading]) {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    #ffffff55 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  animation: image-shimmer 1.3s linear infinite;
+}
+.service-visual,
+.detail-banner {
+  background-color: #2a2d2b;
+}
+@keyframes image-shimmer {
+  from {
+    background-position: 125% 0;
+  }
+  to {
+    background-position: -125% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-image:has(img[data-loading]),
+  .service-visual:has(img[data-loading]),
+  .detail-banner:has(> img[data-loading]) {
+    animation: none;
+  }
+}
