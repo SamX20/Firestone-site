@@ -90,6 +90,7 @@ workFooter: "لكل بيت حكاية. ما حكاية بيتك؟",
     service3Copy:
       "جلسات رخامية، شلالات ومطابخ شواء تجعل المساحة الخارجية جزءاً من يومك، بتصميم يلائم المكان واستخدامه.",
     discussProject: "احكِ لنا عن مشروعك",
+    serviceDetails: "تفاصيل الخدمة وصور الأعمال",
     processKicker: "كيف نعمل",
     processTitle: "فكرة واضحة.\nوخطوات مدروسة.",
     processDescription: "نرافق مشروعك من أول حديث،\nإلى آخر تفصيلة في التنفيذ.",
@@ -240,6 +241,7 @@ workFooter: "Every home has a story. What is yours?",
     service3Copy:
       "Marble seating, water features and barbecue kitchens. Outdoor spaces designed around their setting and the way you use them.",
     discussProject: "Tell us about your project",
+    serviceDetails: "Service details and photos",
     processKicker: "THE PROCESS",
     processTitle: "A clear idea.\nA considered process.",
     processDescription:

@@ -12,4 +12,16 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://firestonejo.com/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://firestonejo.com/?lang=en" />
   </url>
+  <url>
+    <loc>https://firestonejo.com/fireplace</loc>
+    <lastmod>2026-10-26</lastmod>
+  </url>
+  <url>
+    <loc>https://firestonejo.com/cladding</loc>
+    <lastmod>2026-10-26</lastmod>
+  </url>
+  <url>
+    <loc>https://firestonejo.com/outdoor-bbq</loc>
+    <lastmod>2026-10-26</lastmod>
+  </url>
 </urlset>
