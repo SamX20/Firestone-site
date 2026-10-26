@@ -86,3 +86,26 @@ create policy "Submit testimonial" on public.firestone_testimonials for insert t
 create policy "Read published testimonials" on public.firestone_testimonials for select to anon, authenticated using (published);
 create policy "Manage testimonials" on public.firestone_testimonials for all to authenticated using (exists(select 1 from public.firestone_admins where user_id = (select auth.uid()))) with check (exists(select 1 from public.firestone_admins where user_id = (select auth.uid())));
 create trigger touch_testimonials before update on public.firestone_testimonials for each row execute function public.firestone_touch_updated_at();
+
+-- Optional phone-only image for the wide banner slot.
+alter table public.firestone_images add column mobile_url text not null default '' check (length(mobile_url) <= 2048);
+
+-- Contact details shown across the public site (single row), editable from /admin.
+create table public.firestone_contact (
+  id boolean primary key default true check (id),
+  phone text not null check (phone ~ '^\+[0-9]{8,15}$'),
+  whatsapp text not null check (whatsapp ~ '^[0-9]{8,15}$'),
+  instagram text not null default '' check (length(instagram) <= 300 and (instagram = '' or instagram ~ '^https://(www\.)?instagram\.com/')),
+  facebook text not null default '' check (length(facebook) <= 300 and (facebook = '' or facebook ~ '^https://(www\.|m\.)?facebook\.com/')),
+  tiktok text not null default '' check (length(tiktok) <= 300 and (tiktok = '' or tiktok ~ '^https://(www\.)?tiktok\.com/')),
+  email text not null default '' check (length(email) <= 200 and (email = '' or email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$')),
+  updated_at timestamptz not null default now()
+);
+alter table public.firestone_contact enable row level security;
+revoke all on public.firestone_contact from anon, authenticated;
+grant select on public.firestone_contact to anon, authenticated;
+grant update (phone, whatsapp, instagram, facebook, tiktok, email) on public.firestone_contact to authenticated;
+create policy "Read contact info" on public.firestone_contact for select to anon, authenticated using (true);
+create policy "Manage contact info" on public.firestone_contact for update to authenticated using (exists(select 1 from public.firestone_admins where user_id = (select auth.uid()))) with check (exists(select 1 from public.firestone_admins where user_id = (select auth.uid())));
+create trigger touch_contact before update on public.firestone_contact for each row execute function public.firestone_touch_updated_at();
+insert into public.firestone_contact (phone, whatsapp, instagram, facebook) values ('+962798202604', '962798202604', 'https://www.instagram.com/firestonejo_/', 'https://facebook.com/profile.php?id=61588688032575');

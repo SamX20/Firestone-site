@@ -7,12 +7,14 @@
     slides: "firestone_slides",
     images: "firestone_images",
     testimonials: "firestone_testimonials",
+    contact: "firestone_contact",
   };
   const titles = {
     projects: "المشاريع",
     slides: "صور الهيرو",
     images: "صور الأقسام والشعار",
     testimonials: "آراء الزبائن",
+    contact: "معلومات التواصل",
   };
   const slots = {
     logo: "شعار الموقع",
@@ -121,7 +123,9 @@
           ? query.order("slot")
           : tab === "testimonials"
             ? query.order("created_at", { ascending: false })
-            : query.order("position").order("id");
+            : tab === "contact"
+              ? query.limit(1)
+              : query.order("position").order("id");
       const result = await query;
       if (result.error) throw result.error;
       if (version !== loadVersion) return;
@@ -167,12 +171,27 @@
     $("#empty-state").hidden = filtered.length > 0;
     $("#content-list").replaceChildren();
     if (tab === "projects") $("#projects-count").textContent = rows.length;
+    if (tab === "contact") {
+      $("#empty-state").hidden = true;
+      renderContact(rows[0]);
+      return;
+    }
     if (tab === "images") {
       const list = node("div", undefined, "slot-list");
       filtered.forEach((row) => {
         const item = node("article", undefined, "slot-item");
         const info = node("div");
         info.append(node("h3", slots[row.slot]));
+        if (row.slot === "banner")
+          info.append(
+            node(
+              "p",
+              row.mobile_url
+                ? "صورة للكمبيوتر وصورة للموبايل"
+                : "صورة واحدة للكمبيوتر والموبايل",
+              "item-subtitle",
+            ),
+          );
         const edit = node("button", "تغيير الصورة", "btn secondary");
         edit.addEventListener("click", () => openEditor(row));
         info.append(edit);
@@ -243,6 +262,87 @@
     });
     table.append(body);
     $("#content-list").append(table);
+    icons();
+  }
+  const contactFields = [
+    ["phone", "رقم الهاتف (للاتصال)", "+962798202604", "tel"],
+    ["whatsapp", "رقم الواتساب", "962798202604", "tel"],
+    ["instagram", "رابط إنستجرام", "https://www.instagram.com/firestonejo_/", "url"],
+    ["facebook", "رابط فيسبوك", "https://facebook.com/...", "url"],
+    ["tiktok", "رابط تيك توك (اختياري)", "https://www.tiktok.com/@...", "url"],
+    ["email", "البريد الإلكتروني (اختياري)", "info@firestonejo.com", "email"],
+  ];
+  function renderContact(row) {
+    if (!row) return;
+    const form = node("form", undefined, "contact-form");
+    form.noValidate = true;
+    contactFields.forEach(([key, label, placeholder, type]) => {
+      const id = "contact-" + key;
+      const field = node("label", label);
+      field.htmlFor = id;
+      const input = node("input");
+      input.id = id;
+      input.type = type;
+      input.dir = "ltr";
+      input.placeholder = placeholder;
+      input.value = row[key] || "";
+      form.append(field, input);
+    });
+    form.append(
+      node(
+        "p",
+        "رقم الهاتف والواتساب بالصيغة الدولية مثل 962798202604. اترك الحقل الاختياري فارغاً لإخفائه من الموقع.",
+        "item-subtitle",
+      ),
+    );
+    const error = node("p", undefined, "error");
+    error.setAttribute("role", "alert");
+    const submit = node("button", undefined, "btn primary");
+    submit.type = "submit";
+    submit.append(icon("save"), "حفظ التغييرات");
+    form.append(error, submit);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const value = (key) => form.querySelector("#contact-" + key).value.trim();
+      const digits = (key) => value(key).replace(/[^\d]/g, "").replace(/^00/, "");
+      const payload = {
+        phone: "+" + digits("phone"),
+        whatsapp: digits("whatsapp"),
+        instagram: value("instagram"),
+        facebook: value("facebook"),
+        tiktok: value("tiktok"),
+        email: value("email"),
+      };
+      const checks = [
+        [/^\+\d{8,15}$/.test(payload.phone), "رقم الهاتف غير صحيح."],
+        [/^\d{8,15}$/.test(payload.whatsapp), "رقم الواتساب غير صحيح."],
+        [!payload.instagram || /^https:\/\/(www\.)?instagram\.com\//.test(payload.instagram), "رابط إنستجرام يجب أن يبدأ بـ https://www.instagram.com/"],
+        [!payload.facebook || /^https:\/\/(www\.|m\.)?facebook\.com\//.test(payload.facebook), "رابط فيسبوك يجب أن يبدأ بـ https://facebook.com/"],
+        [!payload.tiktok || /^https:\/\/(www\.)?tiktok\.com\//.test(payload.tiktok), "رابط تيك توك يجب أن يبدأ بـ https://www.tiktok.com/"],
+        [!payload.email || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email), "البريد الإلكتروني غير صحيح."],
+      ];
+      const failed = checks.find(([ok]) => !ok);
+      error.textContent = failed ? failed[1] : "";
+      if (failed) return;
+      submit.disabled = true;
+      try {
+        const result = await client
+          .from(tables.contact)
+          .update(payload)
+          .eq("id", true)
+          .eq("updated_at", row.updated_at)
+          .select();
+        if (result.error) throw result.error;
+        if (result.data.length !== 1) throw new Error("CONFLICT");
+        toast("تم حفظ معلومات التواصل. ستظهر على الموقع فوراً.");
+        await load();
+      } catch (err) {
+        error.textContent = errorMessage(err);
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    $("#content-list").append(form);
     icons();
   }
   function renderTestimonials(filtered) {
@@ -337,7 +437,10 @@
     $("#project-fields").hidden = tab !== "projects";
     $("#slide-fields").hidden = tab !== "slides";
     $("#publishing-fields").hidden = tab === "images";
-    $("#mobile-photo-field").hidden = tab !== "slides";
+    $("#mobile-photo-field").hidden = !(
+      tab === "slides" ||
+      (tab === "images" && row?.slot === "banner")
+    );
     $$("#project-fields input").forEach(
       (input) => (input.required = tab === "projects"),
     );
@@ -349,7 +452,11 @@
         : (row ? "تعديل " : "إضافة ") +
           (tab === "projects" ? "مشروع" : "صورة هيرو");
     $("#photos-title").textContent =
-      tab === "projects" ? "صور المشروع" : "الصورة الرئيسية";
+      tab === "projects"
+        ? "صور المشروع"
+        : tab === "slides" || row?.slot === "banner"
+          ? "صورة الكمبيوتر (عريضة)"
+          : "الصورة الرئيسية";
     $("#title-ar").value = row?.title_ar || "";
     $("#title-en").value = row?.title_en || "";
     $("#description-ar").value = row?.description_ar || "";
@@ -546,7 +653,10 @@
         alt_ar: $("#alt-ar").value.trim(),
         alt_en: $("#alt-en").value.trim(),
       };
-    else payload = { image_url: photos[0].url };
+    else {
+      payload = { image_url: photos[0].url };
+      if (current?.slot === "banner") payload.mobile_url = mobile;
+    }
     if (tab !== "images") {
       payload.published = $("#published").checked;
       payload.position = Number($("#position").value);
@@ -620,8 +730,9 @@
         el.classList.toggle("active", el === button),
       );
       $("#view-title").textContent = titles[tab];
-      $("#add-item").hidden = tab === "images" || tab === "testimonials";
-      $("#status-filter").hidden = tab === "images";
+      $("#add-item").hidden = ["images", "testimonials", "contact"].includes(tab);
+      $("#status-filter").hidden = tab === "images" || tab === "contact";
+      $(".toolbar").hidden = tab === "contact";
       $("#add-item span").textContent =
         tab === "projects" ? "إضافة مشروع" : "إضافة صورة";
       $("#search").placeholder =

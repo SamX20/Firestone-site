@@ -877,3 +877,15 @@ body.dialog-open {
     flex-direction: column;
   }
 }
+.contact-form {
+  display: grid;
+  gap: 6px;
+  max-width: 560px;
+}
+.contact-form input {
+  margin-bottom: 10px;
+}
+.contact-form .btn {
+  justify-self: start;
+  margin-top: 6px;
+}

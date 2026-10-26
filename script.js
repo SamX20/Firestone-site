@@ -322,7 +322,8 @@ let managedImages = {};
 const projectFiles = [
   "33", "24", "31", "37", "27", "12", "17", "26", "30", "38", "20",
 ];
-const whatsappUrl = "https://wa.me/962798202604";
+const whatsappUrl = () =>
+  "https://wa.me/" + (window.FirestoneContact?.whatsapp || "962798202604");
 const collapsedCount = 6;
 let workExpanded = false;
 const lightbox = $(".lightbox");
@@ -372,7 +373,7 @@ function setLanguage(next) {
     dictionary[nav.classList.contains("is-open") ? "closeMenu" : "menu"],
   );
   $$("[data-wa-source]").forEach((link) => {
-    link.href = whatsappUrl + "?text=" + encodeURIComponent(dictionary.waGreeting);
+    link.href = whatsappUrl() + "?text=" + encodeURIComponent(dictionary.waGreeting);
   });
   updateWorkMore();
   document.title = dictionary.title;
@@ -515,7 +516,7 @@ function updateLightbox() {
   }
   description.textContent = project?.["description_" + language] || "";
   $(".lightbox-whatsapp").href =
-    whatsappUrl +
+    whatsappUrl() +
     "?text=" +
     encodeURIComponent(
       dictionary.waProject.replace("{title}", $("#lightbox-title").textContent),
@@ -615,7 +616,7 @@ $("#project-form").addEventListener("submit", (event) => {
       ? `مرحباً فايرستون، أنا ${name}.\nمهتم بمشروع: ${type}\nالمنطقة: ${area}${details ? "\nالتفاصيل: " + details : ""}`
       : `Hello Firestone, I'm ${name}.\nProject: ${type}\nLocation: ${area}${details ? "\nDetails: " + details : ""}`;
   window.open(
-    "https://wa.me/962798202604?text=" + encodeURIComponent(message),
+    whatsappUrl() + "?text=" + encodeURIComponent(message),
     "_blank",
     "noopener,noreferrer",
   );
@@ -800,8 +801,20 @@ async function loadManagedContent() {
     );
     if (managedImages.logo)
       $$(".brand img").forEach((img) => (img.src = managedImages.logo));
-    if (managedImages.banner)
-      $(".detail-banner>img").src = managedImages.banner;
+    const bannerRow = content.images.find((row) => row.slot === "banner");
+    const bannerMobile = window.FirestoneCMS.imageUrl(bannerRow?.mobile_url);
+    if (managedImages.banner) {
+      // The banner is a short full-width strip, so phones get their own (taller) crop when one is set.
+      const phone = matchMedia("(max-width: 660px)");
+      const showBanner = () => {
+        const src =
+          phone.matches && bannerMobile ? bannerMobile : managedImages.banner;
+        const img = $(".detail-banner>img");
+        if (img.getAttribute("src") !== src) img.src = src;
+      };
+      showBanner();
+      phone.addEventListener("change", showBanner);
+    }
     updateServiceImage();
     document.documentElement.dataset.cms = "ready";
   } catch {
