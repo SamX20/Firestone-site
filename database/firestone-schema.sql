@@ -109,3 +109,8 @@ create policy "Read contact info" on public.firestone_contact for select to anon
 create policy "Manage contact info" on public.firestone_contact for update to authenticated using (exists(select 1 from public.firestone_admins where user_id = (select auth.uid()))) with check (exists(select 1 from public.firestone_admins where user_id = (select auth.uid())));
 create trigger touch_contact before update on public.firestone_contact for each row execute function public.firestone_touch_updated_at();
 insert into public.firestone_contact (phone, whatsapp, instagram, facebook) values ('+962798202604', '962798202604', 'https://www.instagram.com/firestonejo_/', 'https://facebook.com/profile.php?id=61588688032575');
+
+-- Link-preview image for /review, served through /og/review.jpg (api/og-review.js).
+alter table public.firestone_images drop constraint if exists firestone_images_slot_check;
+alter table public.firestone_images add constraint firestone_images_slot_check check (slot in ('logo','banner','service-0','service-1','service-2','service-3','review-share'));
+insert into public.firestone_images (slot, image_url) values ('review-share', '/assets/og-review.jpg') on conflict (slot) do nothing;

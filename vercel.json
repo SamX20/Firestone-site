@@ -56,5 +56,11 @@
       ]
     }
   ],
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/og/review.jpg",
+      "destination": "/api/og-review"
+    }
+  ]
 }
