@@ -23,7 +23,7 @@
     "service-1": "كلادنغ وبديل رخام",
     "service-2": "الديكورات الداخلية",
     "service-3": "الجلسات الخارجية",
-    "review-share": "صورة معاينة رابط التقييم (واتساب)",
+    "review-cover": "خلفية صفحة التقييم",
   };
   let tab = "projects",
     rows = [],
@@ -183,11 +183,11 @@
         const item = node("article", undefined, "slot-item");
         const info = node("div");
         info.append(node("h3", slots[row.slot]));
-        if (row.slot === "review-share")
+        if (row.slot === "review-cover")
           info.append(
             node(
               "p",
-              "مقاس 1200×630 بصيغة JPG، وخلي الكلام بالنص لأن واتساب بيقص الأطراف. التغيير بيظهر على الروابط الجديدة خلال دقائق.",
+              "الصورة اللي بتظهر خلف نموذج التقييم بصفحة firestonejo.com/review. الأفضل صورة عريضة.",
               "item-subtitle",
             ),
           );

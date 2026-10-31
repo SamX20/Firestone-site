@@ -1,6 +1,15 @@
 (() => {
   const $ = (selector) => document.querySelector(selector);
   const form = $("#review-form");
+  window.FirestoneCMS?.client
+    ?.from("firestone_images")
+    .select("image_url")
+    .eq("slot", "review-cover")
+    .maybeSingle()
+    .then(({ data }) => {
+      const url = window.FirestoneCMS.imageUrl(data?.image_url);
+      if (url) $(".review-cover").src = url;
+    });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     $("#review-error").textContent = "";
